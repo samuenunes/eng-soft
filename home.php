@@ -1,33 +1,24 @@
-
-<html>
+<!DOCTYPE html>
+<html lang = "pt-br">
     <head>
         <meta charset="utf-8" />
-        <title>Home</title>
+        <title>Controle de Livros</title>
+        <link rel = "stylesheet" type = "text/css" href="css/estilo_pagina2.css">
+        <meta nome = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0">
     </head>
     <body>
-        <h1>Daily Books</h1>
-        <fieldset>
-            <label>
-            <a href="cadastro.php" >Cadastro de Livros</a><br>
-            </label> 
-            <label>
-            <a href="livros.php" >Consultar Livros</a><br>
-            </label>
-            <label>
-            <a href="cadastrocli.php" >Cadastro de Clientes</a><br>
-            </label>
-            <label>
-            <a href="clientes.php" >Consultar Clientes</a><br>
-            </label>
-            <label>
-            <a href="aluguel.php" >Aluguel de Livros</a><br>
-            </label>
-            <label>
-            <a href="usuario.php" >Cadastrar Usuário</a><br>
-            </label>
-        </fieldset>
-        <label>
-            <br><a href="index.php">Sair</a><br>
-        </label>
+        <div id = principal>    
+            <div id = topo>
+                <?php include "topo_principal.php"; ?>
+            </div> 
+            <div id = menu>
+                <?php include "menu_principal.php"; ?>
+            </div> 
+            <div id = conteudo>
+            <?php include "conteudo_principal.php"; ?>
+            <div id = rodape>
+                <?php include "rodape_principal.php"; ?>
+            </div> 
+        </div>    
     </body>
 </html>

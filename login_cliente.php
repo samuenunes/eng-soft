@@ -2,7 +2,7 @@
 <html lang = "pt-br">
     <head>
     <meta charset = "utf-8">
-    <title>Controle do estoque de livros</title>
+    <title>login-do-usuário</title>
     <link rel = "stylesheet" type = "text/css" href="css/estilo.css">
     <meta nome = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0">
     </head>
@@ -16,7 +16,15 @@
             <?php include "menu.php"; ?>
             </div>    
         <div id="conteudo">
-            <?php include "conteudo.php"; ?>
+            <br>
+            <br>
+            <form id="login" action = "login_cliente_codigo.php" method = "get">
+                    <label class= "legenda">Usuário</label>
+                    <input class = "campos"type="text" name="usuario" id="usuario" placeholder="Usuário" required/><br><br>
+                    <label class= "legenda">Senha</label>
+                    <input class = "campos" type="password" name="senha" id="senha" placeholder="Senha" required/><br>
+                    <input type= "submit" class = "bt_enviar" value = "Entrar">
+            </form>
         </div>
         <div id= "rodape">
             <?php include "rodape.php"; ?>

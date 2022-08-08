@@ -1,0 +1,1 @@
+<p class= "direitos">&copy;site_aluga_livros.com.br</p>

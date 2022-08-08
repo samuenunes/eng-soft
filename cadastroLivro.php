@@ -1,66 +1,44 @@
-<?php
-    //session_start();
-    //include "livro.php"
-?>
-
-<html>
-    <title>Cadastro Livro</title>
-
-    <h3> Cadastro de Livro </h3>
-
+<!DOCTYPE html>
+<html lang = "pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <title>Controle de Livros</title>
+        <link rel = "stylesheet" type = "text/css" href="css/estilo_pagina2.css">
+        <meta nome = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    </head>
     <body>
-        <form id="cadlivro">
-            <fielset>
-                <label>Preencha os campos para cadastrar!</label><br>
-                Título*<br><input type="text" name="titulo" id="titulo"/><br><br>
-                Autor*<br><input type="text" name="autor" id="autor"/><br><br>
-                Autor 2<br><input type="text" name="autor2" id="autor2" placeholder="Se houver"/><br><br>
-                Edição*<br><input type="text" name="edicao" id="edicao"/><br><br>
-                Editora*<br><input type="text" name="editora" id="editora"/><br><br>
-                Quantidade*<br><input type="number" name="estoque" id="estoque"/><br><br>
-                Preço base*<br><input type="number" name="precob" id="precob"/><br><br>
-                    <button type="submit" name="cadastrar" id="cadastrar" >CADASTRAR</button> 
-            </fieldset>
-        </form>
+        <div id = principal>    
+            <div id = topo>
+                <?php include "topo_principal.php"; ?>
+            </div> 
+            <div id = menu>
+                <?php include "menu_principal.php"; ?>
+            </div> 
+            <div id = conteudo>
+                <form action = "cadastroLivro_codigo.php" method="POST" id="cadlivro">
+                <fielset bord= "2">
+                    <label class = "legenda">Título*</label>
+                    <input class = "campos" type="text" name="titulo" placeholder= "Digite o título do livro" id="titulo" required/><br>
+                    <label class = "legenda">Autor*</label><br>
+                    <input class = "campos"type="text" name="autor" placeholder= "Digite o autor do livro" id="autor" required/><br><br>
+                    <label class = "legenda">Autor 2</label><br>
+                    <input class = "campos"type="text" name="autor2" id="autor2" placeholder="Digite o segundo autor do livro (Não obrigatório)"/><br><br>
+                    <label class = "legenda">Edição*</label><br>
+                    <input class = "campos" type="text" name="edicao" id="edicao" placeholder= "Digite a edição do livro" required/><br><br>
+                    <label class = "legenda">Editora*</label><br>
+                    <input class = "campos"type="text" name="editora" id="editora" placeholder=  "Digite a editora do livro" required/><br><br>
+                    <label class = "legenda">Quantidade*</label><br>
+                    <input class = "campos"type="number" name="estoque" id="estoque" placeholder= "Digite a quantidade" required/><br><br>
+                    <label class = "legenda">Preço base*</label><br>
+                    <input class = "campos"type="text" name="precob" id="precob" placeholder= "Preço do Livro" required/><br><br>
+                        <button class = "bt_enviar" type="submit" name="cadastrar" id="cadastrar" >CADASTRAR</button> 
+                        <a class = "bt_enviar" href="cadastro.php">voltar</a><br>
+                </fieldset>
+                </form>
+            </div> 
+            <div id = rodape>
+                <?php include "rodape_principal.php"; ?>
+            </div> 
+        </div>    
     </body>
 </html>
-
-<?php
-    $titulo = $_GET['titulo'];
-    $autor = $_GET['autor'];
-    $autor2 = $_GET['autor2'];
-    $edicao = $_GET['edicao'];
-    $editora = $_GET['editora'];
-    $estoque = $_GET['estoque'];
-    $preco = $_GET['precob'];
-
-    if ((isset($titulo) && $titulo != '') && (isset($autor) && $autor != '') &&
-        (isset($edicao) && $edicao != '') && (isset($editora) && $editora != '') &&
-        (isset($estoque) && $estoque > 0) && (isset($preco) && $preco > 0)){
-        
-        $dadosCadastro = array();
-        $ok = False;
-
-        $dadosCadastro['titulo'] = $titulo;
-        $dadosCadastro['autor'] = $autor;
-        if(isset($autor2) && $autor2 != ''){
-            $dadosCadastro['autor2'] = $autor2;
-        }
-        $dadosCadastro['edicao'] = $edicao;
-        $dadosCadastro['editora'] = $editora;
-        $dadosCadastro['estoque'] = $estoque;
-        $dadosCadastro['preco'] = $preco;
-
-
-       $ok = True; //cadastrarLivro($dadosCadastro);
-
-       if($ok){
-        header('Location: sucessoLivro.php');
-       }else{
-        echo "Usuário ou autor incorreto. Tente novamente.";
-       }
-    }
-    else if(isset($_GET['titulo'])){
-        echo "NÃÃÃooooooo";
-    }
-?>
