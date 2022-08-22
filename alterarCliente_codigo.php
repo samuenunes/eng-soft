@@ -1,11 +1,13 @@
 <?php
     session_start();
-    include "cliente.php";
+    include "bancodados/cliente.php";
+    include "controlador/clientes.php";
+    if(!isset($_GET['localizar'])){
+        $_GET['localizar'] = '';
+    }
+    $listaClientes= buscarClientes($_GET['localizar'] , $conexao);
 ?>
 
-<?php
-    $listaClientes= buscarClientes($_GET['localizar']);
-?>
 <html>
     <table>
         <tr>
@@ -15,11 +17,11 @@
         </tr>
         <?php foreach ($listaClientes as $aux) : ?>
         <tr>
-            <td><?php echo $aux['cod_cli']; ?></td>
-            <td><?php echo $aux['cpf_cli']; ?></td>
-            <td><?php echo $aux['nom_cli']; ?></td>
-            <td><a href="editarcliente.php id=<?php echo $aux['cod_cli']; ?>"> Editar </td>
-            <td><a href="excluircliente.php id=<?php echo $aux['cod_cli']; ?>">Desativar</td>
+            <td><?php echo $aux['cli_codigo']; ?></td>
+            <td><?php echo $aux['cli_cpf']; ?></td>
+            <td><?php echo $aux['cli_nomcli']; ?></td>
+            <td><form id="editar" action="editarcliente.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Editar"/></form></td>
+            <td><form id="desativar" action="excluircliente.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Desativar"/></form></td>
         </tr>
         <?php endforeach; ?>
     </table>

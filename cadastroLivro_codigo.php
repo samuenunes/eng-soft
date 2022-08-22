@@ -27,9 +27,9 @@ include "bancodados/conexao.php";
         $dadosCadastro['estoque'] = $estoque;
         $dadosCadastro['preco'] = $preco;
 
-        include_once "controlador/livros.php";
+        include_once "controlador/clientes.php";
 
-       $ok = cadastrarLivro($dadosCadastro, $conexao);
+       $ok = cadastrarCliente($dadosCadastro, $conexao);
 
        if($ok){
         header('Location: sucessoLivro.php');

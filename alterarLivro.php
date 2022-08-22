@@ -17,10 +17,14 @@
             <div id = conteudo>
                 <br>
                 <h2> Alterar Livros</h2>
-                <form action = "alterarlivro_codigo.php" id="buscarlivro">
+                <form action = "alterarlivro_codigo.php" id="">
                 <br><input class = "campos_altera" type="text" name="localizar" id="localizar" placeholder="Pesquisar livro">
                 <button class = "bt_buscar" type="submit" id="buscar">BUSCAR</button>
                 </form>
+                <label>
+                    <?php include_once "alterarlivro_codigo.php"; ?>
+                </label>
+
                 <label>
                 <br><a href="cadastro.php">Voltar</a><br>
                 </label>

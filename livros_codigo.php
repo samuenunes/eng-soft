@@ -1,10 +1,13 @@
 <?php
-    session_start();
-    include "livro.php";
+     session_start();
+     include "bancodados/conexao.php";
+     include "controlador/livros.php";
+     if(!isset($_GET['localizar'])){
+         $_GET['localizar'] = '';
+     }
+     $listaLivros= buscarLivros($_GET['localizar'] , $conexao);
 ?>
-<?php
-    $listaLivros= buscarLivros($_GET['localizar']);
-?>
+
 <html>
     <table>
         <tr>
@@ -15,11 +18,12 @@
         </tr>
         <?php foreach ($listaLivros as $aux) : ?>
         <tr>
-            <td><?php echo $aux['cod_livro']; ?></td>
-            <td><?php echo $aux['tit_livro']; ?></td>
-            <td><?php echo $aux['aut_livro']; ?></td>
-            <td><?php echo $aux['edi_livro']; ?></td>
-            <td><a href="consultarLivro.php id=<?php echo $aux['cod_livro']; ?>">Abrir</td>
+            <td><?php echo $aux['liv_codigo']; ?></td>
+            <td><?php echo $aux['liv_titulo']; ?></td>
+            <td><?php echo $aux['liv_autor']; ?></td>
+            <td><?php echo $aux['liv_edicao']; ?></td>
+            <td><form id="editar" action="consultarLivro.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['liv_codigo']; ?>"><input type="submit" value="Abrir"/></form></td>
+
         </tr>
         <?php endforeach; ?>
     </table>

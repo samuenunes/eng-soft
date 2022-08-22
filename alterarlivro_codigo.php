@@ -1,14 +1,14 @@
 <?php
     session_start();
-    //include "livro.php";
-    include "alterarlivro.php";
+    //include "alterarlivro.php";
+    include "bancodados/conexao.php";
+    include "controlador/livros.php";
+    if(!isset($_GET['localizar'])){
+        $_GET['localizar'] = '';
+    }
+    $listaLivros= buscarLivros($_GET['localizar'] , $conexao);
 ?>
 
-<?php
-
-    $listaLivros= buscarLivros($_GET['localizar']);
-?>
-<html>
     <table>
         <tr>
             <th>Código do Livro</th>
@@ -18,12 +18,12 @@
         </tr>
         <?php foreach ($listaLivros as $aux) : ?>
         <tr>
-            <td><?php echo $aux['cod_livro']; ?></td>
-            <td><?php echo $aux['tit_livro']; ?></td>
-            <td><?php echo $aux['aut_livro']; ?></td>
-            <td><?php echo $aux['edi_livro']; ?></td>
-            <td><a href="editarlivro.php id=<?php echo $aux['cod_livro']; ?>"> Editar </td>
-            <td><a href="excluirlivro.php id=<?php echo $aux['cod_livro']; ?>"> Desativar </td>
+            <td><?php echo $aux['liv_codigo']; ?></td>
+            <td><?php echo $aux['liv_titulo']; ?></td>
+            <td><?php echo $aux['liv_autor']; ?></td>
+            <td><?php echo $aux['liv_edicao']; ?></td>
+            <td><form id="editar" action="editarlivro.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['liv_codigo']; ?>"><input type="submit" value="Editar"/></form></td>
+            <td><form id="desativar" action="excluirlivro.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['liv_codigo']; ?>"><input type="submit" value="Desativar"/></form></td>
         </tr>
         <?php endforeach; ?>
     </table>
@@ -34,4 +34,3 @@
         <label>
             <br><a href="home.php" >Voltar ao menu inicial</a><br>
         </label>
-</html>

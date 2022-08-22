@@ -8,31 +8,36 @@
 
 
 
-    function cadastroLivro($dados, $conexao){
-        $titulo = $dados['titulo'];
-        $autor = $dados['autor'];
-        $autor2 = $dados['autor2'];
-        $edicao = $dados['edicao'];
-        $editora = $dados['editora'];
-        $estoque = $dados['estoque'];
-        $precob = $dados['preco'];
+    function cadastroCliente($dados, $conexao){
+        $cpf = $dados['cpf'];
+        $nome = $dados['nome'];
+        $celular = $dados['celular'];
+        $telefone = $dados['telefone'];
+        $rua = $dados['rua'];
+        $numero = $dados['numero'];
+        $bairro = $dados['bairro'];
+        $complemento = $dados['complemento'];
+        $cidade = $dados['cidade'];
+        $estado = $dados['estado'];
 
-        $sql = (" INSERT INTO livro (liv_titulo, liv_autor, liv_autor2, liv_edicao, liv_editora, liv_preco, qtd_estoque)
-                VALUES('$titulo', '$autor', '$autor2', '$edicao', '$editora', '$precob', '$estoque') ");
+        $sql = (" INSERT INTO cliente (cli_cpf, cli_nomcli, cli_celular, cli_phone, cli_rua, cli_numend, cli_bairro,
+        cli_compl, cli_cidade, cli_estado)
+                VALUES('$cpf', '$nome', '$celular', '$telefone', '$rua', '$numero', '$bairro', '$complemento', 
+                '$cidade', '$estado') ");
     
         $ok = mysqli_query($conexao, $sql);
    
         return $ok;
     }
 
-    function buscaLivros($localizar, $conexao){
+    function buscaClientes($localizar, $conexao){
 
         $where = '';
         if($localizar != '' && $localizar != null){
-            $where = "AND (l.liv_codigo like '%$localizar' OR l.liv_titulo like '%$localizar' OR l.liv_autor like '%$localizar' )";
+            $where = "AND (c.cli_codigo like '%$localizar' OR c.cli_nomcli like '%$localizar' OR c.cli_cpf like '%$localizar' )";
         }
-        $sql = ("SELECT l.* FROM livro l 
-        WHERE l.liv_ativo <>'N' $where ");
+        $sql = ("SELECT c.* FROM cliente c 
+        WHERE c.cli_ativo <>'N' $where ");
         
         $resultados = mysqli_query($conexao, $sql);
         $lista = array();
@@ -44,7 +49,7 @@
         return $lista;
     }
 
-    function buscaLivro($codlivro, $conexao) {
+    function buscaCliente($codlivro, $conexao) {
         $sqlBusca = "SELECT l.* FROM livro l  
         WHERE l.liv_ativo <>'N' AND liv_codigo = '$codlivro' ";
         $resultado = mysqli_query($conexao, $sqlBusca);
@@ -53,16 +58,16 @@
         
     }
 
-    function editar($dados, $conexao){
+    function editarrr($dados, $conexao){
         
-        $codigo =   $dados['codigo'];
-        $titulo =   $dados['titulo'];
-        $autor =    $dados['autor'];
-        $autor2 =   $dados['autor2'];
-        $edicao =   $dados['edicao'];
-        $editora =  $dados['editora'];
-        $estoque =  $dados['estoque'];
-        $preco =    $dados['preco'];
+        $codigo =   $$dados['codigo'];
+        $titulo =   $$dados['titulo'];
+        $autor =    $$dados['autor'];
+        $autor2 =   $$dados['autor2'];
+        $edicao =   $$dados['edicao'];
+        $editora =  $$dados['editora'];
+        $estoque =  $$dados['estoque'];
+        $preco =    $$dados['preco'];
 
         $sql = (" UPDATE livro 
             SET liv_titulo  = '$titulo',  
@@ -79,11 +84,11 @@
         return $ok;
     }
 
-    function desativarLivro($dadosCadastro, $conexao){
+    function desativarCliente($dadosCadastro, $conexao){
         
-        $codlivro = $dadosCadastro['liv_codigo'];
+        $codlivro = $$dadosCadastro['liv_codigo'];
 
-        if(!verificaLivro($dadosCadastro, $conexao)){
+        if(!verificaLivro($$dadosCadastro, $conexao)){
             return false;
         }
 
@@ -94,7 +99,7 @@
 
     }
 
-    function verificaLivro($codlivro, $conexao){
+    function verificaCliente($codlivro, $conexao){
         //$sql = "SELECT *  FROM aluguel WHERE liv_codliv = $codlivro AND alu_datdev = '' ";
         //$resultado = mysqli_query($conexao, $sql);
        // $ok = mysqli_fetch_assoc($resultado);

@@ -1,8 +1,9 @@
 <?php
-    //session_start();
-    //include "livro.php"
-
-    $livro = buscarLivro($aux['cod_livro']);
+    session_start();
+    include "bancodados/conexao.php";
+    include "controlador/livros.php";
+    
+    $livro = buscarLivro($_POST['liv_codigo'], $conexao);
 ?>
 
 <html>
@@ -14,13 +15,14 @@
         <form id="cadlivro">
             <fielset>
                 <label>Alterar Cadastro do Livro!</label><br>
-                Título*<br><input type="text" name="titulo" id="titulo" value="<?php echo $livro['tit_livro'];?>"/><br><br>
-                Autor*<br><input type="text" name="autor" id="autor" value="<?php echo $livro['aut_livro'];?>"/><br><br>
-                Autor 2<br><input type="text" name="autor2" id="autor2" placeholder="Se houver" value="<?php echo $livro['au2_livro'];?>"/><br><br>
-                Edição*<br><input type="text" name="edicao" id="edicao" value="<?php echo $livro['edc_livro'];?>"/><br><br>
-                Editora*<br><input type="text" name="editora" id="editora" value="<?php echo $livro['edt_livro'];?>"/><br><br>
-                Quantidade*<br><input type="number" name="estoque" id="estoque" value="<?php echo $livro['est_livro'];?>"/><br><br>
-                Preço base*<br><input type="number" name="precob" id="precob" value="<?php echo $livro['prc_livro'];?>"/><br><br>
+                <input type="hidden" name="codigo" value="<?php echo $livro['liv_codigo'];?>"/>
+                Título*<br><input type="text" name="titulo" id="titulo" value="<?php echo $livro['liv_titulo'];?>"/><br><br>
+                Autor*<br><input type="text" name="autor" id="autor" value="<?php echo $livro['liv_autor'];?>"/><br><br>
+                Autor 2<br><input type="text" name="autor2" id="autor2" placeholder="Se houver" value="<?php echo $livro['liv_autor2'];?>"/><br><br>
+                Edição*<br><input type="text" name="edicao" id="edicao" value="<?php echo $livro['liv_edicao'];?>"/><br><br>
+                Editora*<br><input type="text" name="editora" id="editora" value="<?php echo $livro['liv_editora'];?>"/><br><br>
+                Quantidade*<br><input type="number" name="estoque" id="estoque" value="<?php echo $livro['qtd_estoque'];?>"/><br><br>
+                Preço base*<br><input type="number" name="precob" id="precob" value="<?php echo $livro['liv_preco'];?>"/><br><br>
                     <button type="submit" name="cadastrar" id="cadastrar" >SALVAR</button> 
             </fieldset>
         </form>
@@ -28,21 +30,25 @@
 </html>
 
 <?php
-    $titulo = $_GET['titulo'];
-    $autor = $_GET['autor'];
-    $autor2 = $_GET['autor2'];
-    $edicao = $_GET['edicao'];
-    $editora = $_GET['editora'];
-    $estoque = $_GET['estoque'];
-    $preco = $_GET['precob'];
+    $codigo =   isset($_GET['codigo']) ? $_GET['codigo'] : '';
+    $titulo =   isset($_GET['titulo']) ? $_GET['titulo'] : '';
+    $autor =    isset($_GET['autor']) ? $_GET['autor'] : '';
+    $autor2 =   isset($_GET['autor2']) ? $_GET['autor2'] : '';
+    $edicao =   isset($_GET['edicao']) ? $_GET['edicao'] : '';
+    $editora =  isset($_GET['editora']) ? $_GET['editora'] : '';
+    $estoque =  isset($_GET['estoque']) ? $_GET['estoque'] : '';
+    $preco =    isset($_GET['precob']) ? $_GET['precob'] : '';
 
     if ((isset($titulo) && $titulo != '') && (isset($autor) && $autor != '') &&
         (isset($edicao) && $edicao != '') && (isset($editora) && $editora != '') &&
         (isset($estoque) && $estoque > 0) && (isset($preco) && $preco > 0)){
         
+        include_once "controlador/livros.php";
+
         $dadosCadastro = array();
         $ok = False;
-
+        
+        $dadosCadastro['codigo'] = $codigo;
         $dadosCadastro['titulo'] = $titulo;
         $dadosCadastro['autor'] = $autor;
         if(isset($autor2) && $autor2 != ''){
@@ -54,7 +60,7 @@
         $dadosCadastro['preco'] = $preco;
 
 
-       $ok = True; //editarLivro($dadosCadastro);
+       $ok = editarLivroo($dadosCadastro, $conexao);
 
        if($ok){
         header('Location: sucessoLivroe.php');

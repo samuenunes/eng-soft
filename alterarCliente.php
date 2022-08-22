@@ -23,6 +23,9 @@
                 <label>
                 <br><a href="cadastrocli.php">Voltar</a><br>
                 </label>
+                <label>
+                    <?php include_once "alterarCliente_codigo.php"; ?>
+                </label>
             </div> 
             <div id = rodape>
                 <?php include "rodape_principal.php"; ?>

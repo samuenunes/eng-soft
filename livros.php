@@ -23,6 +23,9 @@
                 <label>
                 <br><a href="home.php">voltar</a><br>
                 </label>
+                <label>
+                    <?php include_once "livros_codigo.php"; ?>
+                </label>
             </div> 
             <div id = rodape>
                 <?php include "rodape_principal.php"; ?>

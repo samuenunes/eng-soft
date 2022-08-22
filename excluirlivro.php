@@ -1,10 +1,11 @@
 <?php
-    //session_start();
-    //include "livro.php"
-
-    $livro = buscarLivro($aux['cod_livro']);
+    session_start();
+    include "bancodados/conexao.php";
+    include "controlador/livros.php";
+    $livro = buscarLivro($_POST['liv_codigo'], $conexao);
 ?>
 <html>
+    <input type="hidden" name="codliv" id="codliv" value="<?php echo $livro['liv_codigo']; ?>">
 <table>
         <tr>
             <th>Código do Livro</th>
@@ -12,42 +13,41 @@
             <th>Autor</th>
             <th>Edição</th>
         </tr>
-        <?php foreach ($listaLivros as $aux) : ?>
         <tr>
-            <td><?php echo $aux['cod_livro']; ?></td>
-            <td><?php echo $aux['tit_livro']; ?></td>
-            <td><?php echo $aux['aut_livro']; ?></td>
-            <td><?php echo $aux['edi_livro']; ?></td>
+            <td><?php echo $livro['liv_codigo']; ?></td>
+            <td><?php echo $livro['liv_titulo']; ?></td>
+            <td><?php echo $livro['liv_autor']; ?></td>
+            <td><?php echo $livro['liv_edicao']; ?></td>
         </tr>
-        <?php endforeach; ?>
     </table>
-
+    <br><br><br>
     <div class="row">
-        <span> Deseja realmente desativar esse livro? </span>
+        <div> Deseja realmente desativar esse livro? </div>
 
-        <button type="submit" id="desativar" value="<?php echo $aux['cod_livro']; ?>">SIM</button>
-        <a href="cadastro.php">NÃO</a>
+        <div class="row">
+            <form id="editar"> <input type="hidden" name="liv_codigo" value="<?php echo $livro['liv_codigo']; ?>"><input type="submit" value="SIM"/></form>
+            <a href="cadastro.php">NÃO</a>
+        </div>
     </div>
 </html>
 <?php
 
-    if (isset($_GET['desativar']) && $_GET['desativar'] != ''){
+    if (isset($_GET['liv_codigo']) && $_GET['liv_codigo'] != ''){
         
+        include_once "controlador/livros.php";
         $dadosCadastro = array();
         $ok = False;
 
-        $dadosCadastro['cod_livro'] = $_GET['desativar'];
+        $dadosCadastro['liv_codigo'] = $_GET['liv_codigo'];
 
-       $ok = True; //desativarLivro($dadosCadastro);
+       $ok = desativarLivro($dadosCadastro, $conexao);
 
        if($ok){
-       echo "Livro desativado com sucesso!";
-       }else{
-        echo $ok;
+        header('Location: sucessoLivroe.php');
        }
-    }
-    else if(isset($_GET['titulo'])){
-        echo "NÃÃÃooooooo";
+       else{
+        header('Location: errolivroex.php');
+       }
     }
 ?>
 <html>
@@ -60,3 +60,28 @@
         </label>
     </fieldset>
 </html>
+
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>
+<script>
+
+    function desativa(){
+        var codigo = $("#codliv").val();
+
+        var request = $.ajax({
+
+            url: 'controlador/livros.php',
+            type: 'POST',
+            data: codigo,
+            dataType: 'html'
+            });
+
+        request.done(callback(resposta));
+
+
+    }
+
+    function callback(){
+        alert("aaaaaaaa");
+    }
+
+</script>
