@@ -4,85 +4,73 @@
 
 <?php
 	session_start();
-	//include "aluguel.php";
-	//include "livro.php";
-	//include "cliente.php";
-	//$listaClientes= buscarClientes();
-	//$listaLivros= buscarLivros();
+	include "bancodados/cliente.php";
+	include "controlador/clientes.php";
 
-	$listaClientes = array ("Ajax", "PHP", "HTML","CSS", "tsste", "aad", "dadas", "rwoir", "sddç", "aadddddddasdasdasdasdad");
-	$listaLivros = array ("Ajax", "PHP", "HTML","CSS", "tsste", "aad", "dadas", "rwoir", "sddç", "aadddddddasdasdasdasdad");
-	echo "<form id='alugar'>";
-	echo "<div id='geral'>";
-	//bloco livros
-	echo "<div id='calc'> Selecione o Livro: <br>";
-	echo "<form id='calcula'>";
-	echo "<select id='livro'>";
-	foreach($listaLivros as $livros) 
-	{
-	  echo "<option name='$livros' value='$livros'>$livros</option>";
-	}
-	echo "</select><br><br>";
-
-	echo "<input type='text' id='precoo' value=''>";
-	echo "<button type='button' id='calcular' onclick='calcula()'>calcular</button>";
-
-
-
-	echo "</form>";
-	echo "</div>";
+	include "bancodados/conexao.php";
+	include "controlador/livros.php";
+	$localizar = '';
+	$listaClientes = buscarClientes($localizar, $conexao);
+	$listaLivros = buscarLivros($localizar, $conexao);
+?>
+<form id='alugar'>
+	<div id='geral'>
+		<div id='calc'> Selecione o Livro: <br>
+			<form id='calcula'>
+				<select id='livro' class='selectLiv'>
+					<?php foreach($listaLivros as $livros){ ?> 
+						<option name='<?php echo $livros['liv_titulo'];?>' value='<?php echo $livros['liv_codigo'];?>'><?php echo $livros['liv_titulo'];?></option>
+					<?php } ?>
+				</select><br><br>
+				Preço<br><input type='text' id='precoo' value=''>
+				<button type='button' id='calcular' onclick='calcula()'>calcular</button>
+			</form>
+		</div>
 	
-	// bloco clientes
-	echo "<div > Selecione o Cliente: </div>";
-	echo "<select id='cliente'>";
-	foreach($listaClientes as $clientes) 
-	{
-	  echo "<option name='$clientes' value='$clientes'>$clientes</option>";
-	}
-	echo "</select><br><br>";
-	
-	echo "Data Inicial<br><input type='date' name='dataini'/><br><br>";
-	echo "Data Final<br><input type='date' name='datafim'/<br><br>";
+		<!-- bloco clientes -->
+		<br><div > Selecione o Cliente: </div>
+		<select id='cliente' class='selectCli'>
+		<?php foreach($listaClientes as $clientes){ ?> 
+			<option name='<?php echo $clientes['cli_nomcli'];?>' value='<?php echo $clientes['cli_codigo'];?>'><?php echo $clientes['cli_nomcli'];?></option>
+		<?php } ?>
+		</select><br><br>
+		
+		Data Inicial<br><input type='date' name='dataini'/><br><br>
+		Data Final<br><input type='date' name='datafim'/><br><br>
 
-	echo "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>";
-	echo "<script>
-	
-
+		<br><br><input type='submit' id='gravar' value='Finalizar'>
+	</div>
+</form>
+</html>
+<script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script>
 
 	function calcula(){
-
 		var livro = document.getElementById('cliente');
 		var preco = document.getElementById('precoo');
-		var selecionado = livro.options[livro.selectedIndex].value;
-		preco.setAttribute('value', 'tesetttt');
-		alert('veio');
+		var selecionado = $('.selectLiv option:selected').val();
+		console.log("select==>"+selecionado);
+		//preco.setAttribute('value', 'tesetttt');
 
 		var request = $.ajax({
-
-			url: 'calculaPreco.php',
+			url: 'controlador/calculaPreco.php',
 			type: 'POST',
-			data: selecionado,
-			dataType: 'html'
+			data: {'liv_codigo': selecionado},
+			dataType: 'html',
+			success: function callback(data){
+				console.log(data);
+			}
 		});
 
-		request.done(callback(resposta));
-
+		//request.done(callback(resposta));
 	}
 
-	function callback(resposta){
-
-		alert('veio**');
-		console.log(resposta);
+	function callback(data){
+		console.log("SSSSSSS"+data);
 	}
-	</script>";
 
-	//$preco = buscarPreco();
-	echo "Preço <br><input type='text' name='preco' id='preco' value='teste'/>";
-
-	echo "<br><br><input type='submit' id='gravar' value='Finalizar'>";
-	echo "</form>";
-	echo "</div>";
-
-?>
-
-</html>
+	$('.selectLiv').change(function(){
+		var selecionado = $('.selectLiv option:selected').val();
+		console.log(selecionado);
+	});
+</script>

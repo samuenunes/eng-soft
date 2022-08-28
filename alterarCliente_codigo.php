@@ -20,8 +20,8 @@
             <td><?php echo $aux['cli_codigo']; ?></td>
             <td><?php echo $aux['cli_cpf']; ?></td>
             <td><?php echo $aux['cli_nomcli']; ?></td>
-            <td><form id="editar" action="editarcliente.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Editar"/></form></td>
-            <td><form id="desativar" action="excluircliente.php" method="POST"> <input type="hidden" name="liv_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Desativar"/></form></td>
+            <td><form id="editar" action="editarcliente.php" method="POST"> <input type="hidden" name="cli_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Editar"/></form></td>
+            <td><form id="desativar" action="excluircliente.php" method="POST"> <input type="hidden" name="cli_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Desativar"/></form></td>
         </tr>
         <?php endforeach; ?>
     </table>

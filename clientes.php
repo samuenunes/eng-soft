@@ -2,7 +2,7 @@
 <html lang = "pt-br">
     <head>
         <meta charset="utf-8" />
-        <title>Controle de Livros</title>
+        <title>Controle de Clientes</title>
         <link rel = "stylesheet" type = "text/css" href="css/estilo_pagina2.css">
         <meta nome = "viewport" content = "width=device-width, initial-scale=1.0, maximum-scale=1.0">
     </head>
@@ -20,6 +20,9 @@
                 <br><input type="text" name="localizar" id="localizar" placeholder="PESQUISAR">
                 <button type="submit" id="buscar">BUSCAR</button>
                 </form>
+                <label>
+                    <?php include_once "clientes_codigo.php"; ?>
+                </label>
                 <label>
                 <br><a href="home.php">Voltar</a><br>
                 </label>

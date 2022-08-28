@@ -1,7 +1,7 @@
 <?php
     session_start();
-    include "cadastroLivro.php";
-    include "bancodados/conexao.php";
+    include "cadastroCliente.php";
+    include "bancodados/cliente.php";
         $cpf = $_POST['cpf'];
         $nome = $_POST['nome'];
         $celular = $_POST['celular'];

@@ -1,51 +1,50 @@
 <?php
-    //session_start();
-    //include "cliente.php"
+    session_start();
+    include "bancodados/cliente.php";
+    include "controlador/clientes.php";
+     
+    $cliente = buscarCliente($_POST['cli_codigo'], $conexao);
 
-    $cliente = buscarCliente($aux['cod_cliente']);
 ?>
 <html>
+<input type="hidden" name="codcli" id="codcli" value="<?php echo $cliente['cli_codigo']; ?>">
 <table>
         <tr>
             <th>Código do Cliente</th>
             <th>CPF do Cliente</th>
             <th>Nome do Cliente</th>
-        </tr>
-        <?php foreach ($cliente as $aux) : ?>
+        </tr> 
         <tr>
-            <td><?php echo $aux['cod_cli']; ?></td>
-            <td><?php echo $aux['cpf_cli']; ?></td>
-            <td><?php echo $aux['nom_cli']; ?></td>
+            <td><?php echo $cliente['cli_codigo']; ?></td>
+            <td><?php echo $cliente['cli_cpf']; ?></td>
+            <td><?php echo $cliente['cli_nomcli']; ?></td>
         </tr>
-        <?php endforeach; ?>
     </table>
 
     <div class="row">
         <span> Deseja realmente desativar esse cliente? </span>
 
-        <button type="submit" id="desativar" value="<?php echo $aux['cod_cli']; ?>">SIM</button>
+        <form id="editar"> <input type="hidden" name="cli_codigo" value="<?php echo $cliente['cli_codigo']; ?>"><input type="submit" value="SIM"/></form>
         <a href="cadastrocli.php">NÃO</a>
     </div>
 </html>
 <?php
 
-    if (isset($_GET['desativar']) && $_GET['desativar'] != ''){
+    if (isset($_GET['cli_codigo']) && $_GET['cli_codigo'] != ''){
         
+        include_once "controlador/clientes.php";
         $dadosCadastro = array();
         $ok = False;
 
-        $dadosCadastro['cod_cli'] = $_GET['desativar'];
+        $dadosCadastro['cli_codigo'] = $_GET['cli_codigo'];
 
-       $ok = True; //desativarCliente($dadosCadastro);
+        $ok = desativaCliente($dadosCadastro, $conexao);
 
        if($ok){
-       echo "Cliente desativado com sucesso!";
+        header('Location: sucessoClientee.php');
        }else{
-        echo $ok;
+        header('Location: erroclienteex.php');
        }
-    }
-    else if(isset($_GET['titulo'])){
-        echo "NÃÃÃooooooo";
     }
 ?>
 <html>

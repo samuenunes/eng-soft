@@ -68,7 +68,4 @@
         echo "Dados preenchidos incorretamente. Tente novamente.";
        }
     }
-    else if(isset($_GET['titulo'])){
-        echo "NÃÃÃooooooo";
-    }
 ?>

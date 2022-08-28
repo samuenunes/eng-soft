@@ -1,11 +1,13 @@
 <?php
-    session_start();
-    include "cliente.php";
+     session_start();
+     include "bancodados/cliente.php";
+     include "controlador/clientes.php";
+     if(!isset($_GET['localizar'])){
+         $_GET['localizar'] = '';
+     }
+     $listaClientes= buscarClientes($_GET['localizar'] , $conexao);
 ?>
 
-<?php
-    $listaClientes= buscarClientes($_GET['localizar']);
-?>
 <html>
     <table>
         <tr>
@@ -15,10 +17,10 @@
         </tr>
         <?php foreach ($listaClientes as $aux) : ?>
         <tr>
-            <td><?php echo $aux['cod_cli']; ?></td>
-            <td><?php echo $aux['cpf_cli']; ?></td>
-            <td><?php echo $aux['nom_cli']; ?></td>
-            <td><a href="consultarCliente.php id=<?php echo $aux['cod_cli']; ?>">Abrir</td>
+            <td><?php echo $aux['cli_codigo']; ?></td>
+            <td><?php echo $aux['cli_cpf']; ?></td>
+            <td><?php echo $aux['cli_nomcli']; ?></td>
+            <td><form id="editar" action="consultarCliente.php" method="POST"> <input type="hidden" name="cli_codigo" value="<?php echo $aux['cli_codigo']; ?>"><input type="submit" value="Abrir"/></form></td>
         </tr>
         <?php endforeach; ?>
     </table>

@@ -18,7 +18,7 @@
                 <ul class="links_conteudo">
                 <br>
                 <br>  
-                <li><a href="aluguel/alugarLivro.php">Alugar um livro</a></li>
+                <li><a href="alugarLivro.php">Alugar um livro</a></li>
                 <br>
                 <br>
                 <li><a href="devolverLivro.php">Devolver um livro</a></li>

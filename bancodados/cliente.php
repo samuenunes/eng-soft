@@ -3,7 +3,7 @@
     $servidor = 'localhost';
     $usuario = 'root';
     $senha = '123456';
-    $dbname = 'livro';
+    $dbname = 'book';
     $conexao = mysqli_connect($servidor, $usuario, $senha, $dbname);
 
 
@@ -49,35 +49,41 @@
         return $lista;
     }
 
-    function buscaCliente($codlivro, $conexao) {
-        $sqlBusca = "SELECT l.* FROM livro l  
-        WHERE l.liv_ativo <>'N' AND liv_codigo = '$codlivro' ";
+    function buscaCliente($codigo, $conexao) {
+        $sqlBusca = "SELECT c.* FROM cliente c  
+        WHERE c.cli_ativo <>'N' AND cli_codigo = '$codigo' ";
         $resultado = mysqli_query($conexao, $sqlBusca);
         
         return mysqli_fetch_assoc($resultado);
         
     }
 
-    function editarrr($dados, $conexao){
+    function editarCli($dados, $conexao){
         
-        $codigo =   $$dados['codigo'];
-        $titulo =   $$dados['titulo'];
-        $autor =    $$dados['autor'];
-        $autor2 =   $$dados['autor2'];
-        $edicao =   $$dados['edicao'];
-        $editora =  $$dados['editora'];
-        $estoque =  $$dados['estoque'];
-        $preco =    $$dados['preco'];
+        $codigo =       $dados['codigo'];
+        $cpf =          $dados['cpf'];
+        $nome =         $dados['nome'];
+        $celular =      $dados['celular'];
+        $telefone =     $dados['telefone'];
+        $rua =          $dados['rua'];
+        $numero =       $dados['numero'];
+        $bairro =       $dados['bairro'];
+        $complemento =  $dados['complemento'];
+        $cidade =       $dados['cidade'];
+        $estado =       $dados['estado'];
 
-        $sql = (" UPDATE livro 
-            SET liv_titulo  = '$titulo',  
-                liv_autor   = '$autor',  
-                liv_autor2  = '$autor2',  
-                liv_edicao  = '$edicao', 
-                liv_editora = '$editora', 
-                qtd_estoque = '$estoque', 
-                liv_preco   = '$preco'
-                WHERE liv_codigo = '$codigo' AND liv_titulo = '$titulo' AND liv_autor = '$autor' AND  liv_edicao = '$edicao' ");
+        $sql = (" UPDATE cliente 
+            SET cli_cpf =       '$cpf',  
+                cli_nomcli =    '$nome',  
+                cli_celular =   '$celular', 
+                cli_phone =     '$telefone', 
+                cli_rua =       '$rua', 
+                cli_numend =    '$numero', 
+                cli_bairro =    '$bairro', 
+                cli_compl =     '$complemento',
+                cli_cidade =    '$cidade',
+                cli_estado =    '$estado'
+                WHERE cli_codigo = '$codigo' AND cli_cpf = '$cpf' ");
     
         $ok = mysqli_query($conexao, $sql);
 
@@ -86,21 +92,21 @@
 
     function desativarCliente($dadosCadastro, $conexao){
         
-        $codlivro = $$dadosCadastro['liv_codigo'];
+        $clicodigo = $dadosCadastro['cli_codigo'];
 
-        if(!verificaLivro($$dadosCadastro, $conexao)){
+        if(!verificaCliente($dadosCadastro, $conexao)){
             return false;
         }
 
-        $sql = "UPDATE livro SET liv_ativo = 'N' WHERE liv_codigo = '$codlivro' ";
+        $sql = "UPDATE cliente SET cli_ativo = 'N' WHERE cli_codigo = '$clicodigo' ";
         $resultado = mysqli_query($conexao, $sql);
         
         return $resultado;
 
     }
 
-    function verificaCliente($codlivro, $conexao){
-        //$sql = "SELECT *  FROM aluguel WHERE liv_codliv = $codlivro AND alu_datdev = '' ";
+    function verificaCliente($clicodigo, $conexao){
+        //$sql = "SELECT *  FROM aluguel WHERE liv_codliv = $clicodigo AND alu_datdev = '' ";
         //$resultado = mysqli_query($conexao, $sql);
        // $ok = mysqli_fetch_assoc($resultado);
        $ok = true;
