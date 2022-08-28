@@ -1,5 +1,5 @@
 <?php
-    include "/bancodados/util.php";
+    include "bancodados/util.php";
     $request = $_POST['liv_codigo'];
     if(isset($request)){
         return calculaPreco();
