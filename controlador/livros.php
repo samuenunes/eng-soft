@@ -15,6 +15,13 @@
        return $lista;
     }
 
+    function buscarLivrosDisp($localizar, $conexao){
+        include_once "bancodados/conexao.php";
+       $lista = buscaLivrosDisp($localizar, $conexao);
+
+       return $lista;
+    }
+
     function buscarLivro($codlivro, $conexao){
         include_once "bancodados/conexao.php";
        $lista = buscaLivro($codlivro, $conexao);

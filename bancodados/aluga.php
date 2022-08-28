@@ -17,33 +17,62 @@
         return $i;
     }
 
+    function aluga($dados, $conexao){
 
+        $liv_codigo = $dados['liv_codigo'];
+        $cli_codigo = $dados['cli_codigo'];
+        $preco = $dados['alu_preco'];
+        $datini = $dados['alu_datini']; //implode("/",array_reverse(explode("-",$dados['alu_datini'])));
+        $datfim = $dados['alu_datfim']; //implode("/",array_reverse(explode("-",$dados['alu_datfim'])));
 
-    function cadastroLivro($dados, $conexao){
-        $titulo = $dados['titulo'];
-        $autor = $dados['autor'];
-        $autor2 = $dados['autor2'];
-        $edicao = $dados['edicao'];
-        $editora = $dados['editora'];
-        $estoque = $dados['estoque'];
-        $precob = $dados['preco'];
+        // Travando tabela
+        mysqli_query($conexao, " LOCK TABLES aluguel WRITE ;");
 
-        $sql = (" INSERT INTO livro (liv_titulo, liv_autor, liv_autor2, liv_edicao, liv_editora, liv_preco, qtd_estoque)
-                VALUES('$titulo', '$autor', '$autor2', '$edicao', '$editora', '$precob', '$estoque') ");
+        // pegando numero do aluguel a ser inserido
+        $sqlNumAlu = ("SELECT auto_increment AS numero FROM information_schema.TABLES 
+            WHERE TABLE_NAME = 'aluguel' AND TABLE_SCHEMA = 'book';");
+        $ex =  mysqli_query($conexao, $sqlNumAlu);
+        //$numAlu = mysqli_fetch_assoc($ex);
+
+        //inserindo dados do aluguel
+        $okk = False;
+        $sql = (" INSERT INTO aluguel (liv_codigo, cli_cpf, alu_preco, alu_datini, alu_datfim)
+                VALUES('$liv_codigo', '$cli_codigo', '$preco', '$datini', '$datfim') ");
     
         $ok = mysqli_query($conexao, $sql);
+        mysqli_query($conexao, " UNLOCK TABLES;"); //destravando tabela
+        if($ok){
+            $okk = atualizaEstoque($liv_codigo, $conexao);
+            if($okk){
+                return mysqli_fetch_assoc($ex);
+            }else{
+                $ok = False;
+            }
+        }
    
         return $ok;
     }
 
-    function buscaLivros($localizar, $conexao){
+    function buscarAluguel($codalu, $conexao){
+        $sql = (" SELECT a.*, l.liv_titulo, c.cli_nomcli FROM aluguel a
+        LEFT OUTER JOIN livro l ON (l.liv_codigo = a.liv_codigo AND l.liv_ativo <> 'N')
+        LEFT OUTER JOIN cliente c ON (c.cli_cpf = a.cli_cpf AND c.cli_ativo <> 'N') 
+        WHERE a.alu_codigo = '$codalu' AND ISNULL(alu_datdev) ");
+        $ex = mysqli_query($conexao, $sql);
+        return mysqli_fetch_assoc($ex);
+    }
+
+    function buscarAlugueis($localizar, $conexao){
 
         $where = '';
         if($localizar != '' && $localizar != null){
-            $where = "AND (l.liv_codigo like '%$localizar' OR l.liv_titulo like '%$localizar' OR l.liv_autor like '%$localizar' )";
+            $where = "AND (a.alu_codalu like '%$localizar' 
+            OR a.liv_codigo like '%$localizar' OR a.cli_cpf like '%$localizar')";
         }
-        $sql = ("SELECT l.* FROM livro l 
-        WHERE l.liv_ativo <>'N' $where ");
+        $sql = ("SELECT a.*, l.liv_titulo, c.cli_nomcli FROM aluguel a
+        LEFT OUTER JOIN livro l ON (l.liv_codigo = a.liv_codigo AND l.liv_ativo <> 'N')
+        LEFT OUTER JOIN cliente c ON (c.cli_cpf = a.cli_cpf AND c.cli_ativo <> 'N') 
+        WHERE a.alu_codigo <> '' $where");
         
         $resultados = mysqli_query($conexao, $sql);
         $lista = array();
@@ -55,62 +84,39 @@
         return $lista;
     }
 
-    function buscaLivro($codlivro, $conexao) {
-        $sqlBusca = "SELECT l.* FROM livro l  
-        WHERE l.liv_ativo <>'N' AND liv_codigo = '$codlivro' ";
-        $resultado = mysqli_query($conexao, $sqlBusca);
-        
-        return mysqli_fetch_assoc($resultado);
-        
-    }
+    function devolve($dados, $conexao){
 
-    function editar($dados, $conexao){
-        
-        $codigo =   $dados['codigo'];
-        $titulo =   $dados['titulo'];
-        $autor =    $dados['autor'];
-        $autor2 =   $dados['autor2'];
-        $edicao =   $dados['edicao'];
-        $editora =  $dados['editora'];
-        $estoque =  $dados['estoque'];
-        $preco =    $dados['preco'];
-
-        $sql = (" UPDATE livro 
-            SET liv_titulo  = '$titulo',  
-                liv_autor   = '$autor',  
-                liv_autor2  = '$autor2',  
-                liv_edicao  = '$edicao', 
-                liv_editora = '$editora', 
-                qtd_estoque = '$estoque', 
-                liv_preco   = '$preco'
-                WHERE liv_codigo = '$codigo' AND liv_titulo = '$titulo' AND liv_autor = '$autor' AND  liv_edicao = '$edicao' ");
-    
+        $liv_codigo = $dados['liv_codigo'];
+        $cli_codigo = $dados['cli_codigo'];
+        $alu_codigo = $dados['alu_codigo'];
+        $datdev     = $dados['alu_datdev']; //implode("/",array_reverse(explode("-",$dados['alu_datfim'])));
+            
+        $sql = ("UPDATE aluguel SET alu_datdev = '$datdev'
+        WHERE liv_codigo = '$liv_codigo' AND cli_cpf = '$cli_codigo' AND alu_codigo = '$alu_codigo'");
+       
         $ok = mysqli_query($conexao, $sql);
 
-        return $ok;
-    }
-
-    function desativarLivro($dadosCadastro, $conexao){
-        
-        $codlivro = $dadosCadastro['liv_codigo'];
-
-        if(!verificaLivro($dadosCadastro, $conexao)){
-            return false;
+        if($ok){
+            $okk = atualizaEstoqueDev($liv_codigo, $conexao);
+            if($okk){
+                return $okk;
+            }else{
+                $ok = False;
+            }
         }
 
-        $sql = "UPDATE livro SET liv_ativo = 'N' WHERE liv_codigo = '$codlivro' ";
-        $resultado = mysqli_query($conexao, $sql);
-        
-        return $resultado;
-
-    }
-
-    function verificaLivro($codlivro, $conexao){
-        //$sql = "SELECT *  FROM aluguel WHERE liv_codliv = $codlivro AND alu_datdev = '' ";
-        //$resultado = mysqli_query($conexao, $sql);
-       // $ok = mysqli_fetch_assoc($resultado);
-       $ok = true;
         return $ok;
     }
 
+    function atualizaEstoque($liv_codigo, $conexao){
+        $sql = (" UPDATE livro SET qtd_estoque = (qtd_estoque - 1) WHERE liv_codigo = '$liv_codigo' ");
+        $ok = mysqli_query($conexao, $sql);
+        return $ok;
+    }
+
+    function atualizaEstoqueDev($liv_codigo, $conexao){
+        $sql = (" UPDATE livro SET qtd_estoque = (qtd_estoque + 1) WHERE liv_codigo = '$liv_codigo' ");
+        $ok = mysqli_query($conexao, $sql);
+        return $ok;
+    }
 ?>

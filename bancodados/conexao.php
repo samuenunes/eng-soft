@@ -44,6 +44,25 @@
         return $lista;
     }
 
+    function buscaLivrosDisp($localizar, $conexao){
+
+        $where = '';
+        if($localizar != '' && $localizar != null){
+            $where = "AND (l.liv_codigo like '%$localizar' OR l.liv_titulo like '%$localizar' OR l.liv_autor like '%$localizar' )";
+        }
+        $sql = ("SELECT l.* FROM livro l 
+        WHERE l.liv_ativo <>'N' AND l.qtd_estoque > 0 $where ");
+        
+        $resultados = mysqli_query($conexao, $sql);
+        $lista = array();
+
+        while ($aux = mysqli_fetch_assoc($resultados)) {
+            $lista[] = $aux;
+        }
+
+        return $lista;
+    }
+
     function buscaLivro($codlivro, $conexao) {
         $sqlBusca = "SELECT l.* FROM livro l  
         WHERE l.liv_ativo <>'N' AND liv_codigo = '$codlivro' ";
