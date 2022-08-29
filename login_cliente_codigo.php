@@ -1,25 +1,24 @@
 <?php
-include "login_cliente.php";
+    include "login_cliente.php";
 
-    $usuario = $_GET['usuario'];
-    $senha = $_GET['senha'];
+    $pass = $_POST['senha'];
+    $user = $_POST['user'];
     $ok = False;
-    if ((isset($usuario) && $usuario != '') && (isset($senha) && $senha != '')){
+    if ((isset($user) && $user != '') && (isset($pass) && $pass != '')){
         $dadosLogin = array();
+       
+        include_once "bancodados/usuario.php";
+
+        $dadosLogin['usuario'] = $user;
+        $dadosLogin['pass'] = $pass;
         
-
-        $dadosLogin['usuario'] = $usuario;
-        $dadosLogin['senha'] = $senha;
-
-       $ok = True; //logar($dadosLogin);
+        $ok = logar($dadosLogin, $conexao);
 
        if($ok){
-        header('Location: home.php');
+            header('Location: home.php');
        }else{
-        echo "Usuário ou Senha incorreto. Tente novamente.";
+            echo " <script> alert('Usuário ou Senha incorretos! '); </script>";
+		    echo " <script> window.location.replace('login_cliente.php'); </script>";
        }
-    }
-    else if(!$ok && isset($usuario)){
-        echo "eroooooooooo";
     }
 ?>

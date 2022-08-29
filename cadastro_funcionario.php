@@ -24,11 +24,13 @@
                 <label class="legenda">Nome*</label><br>
                 <input class="campos" type="text" name="nome" id="nome" placeholder = "Digite seu nome completo" required/><br>
                 <label class="legenda">Celular*</label><br>
-                <input class="campos" type="tel" name="celular" id="celular" pattern="[0-9]{9}" placeholder="Digite o número do celular" required/><br>
+                <input class="campos" type="tel" name="celular" id="celular" pattern="[0-9]{11}" placeholder="Digite o número do celular" required/><br>
                 <label class="legenda">E-mail*</E-mail></label><br>
                 <input class="campos" type="email" name="email" id="email" placeholder= "Digite seu email" required/><br>
                 <label class="legenda">Usuario*</label><br>
                 <input class="campos" type="text" name="usuario" id="usuario"/><br>
+                <label class="legenda">Senha*</label><br>
+                <input class="campos" type="password" name="senha" id="senha"/><br>
                 <input type= "submit" class = "bt_enviar" value = "Cadastrar">
         </form>
         </div>

@@ -18,9 +18,9 @@
         <div id="conteudo">
             <br>
             <br>
-            <form id="login" action = "login_cliente_codigo.php" method = "get">
+            <form id="login" action = "login_cliente_codigo.php" method = "POST">
                     <label class= "legenda">Usuário</label>
-                    <input class = "campos"type="text" name="usuario" id="usuario" placeholder="Usuário" required/><br><br>
+                    <input class = "campos"type="text" name="user" id="user" placeholder="Usuário" required/><br><br>
                     <label class= "legenda">Senha</label>
                     <input class = "campos" type="password" name="senha" id="senha" placeholder="Senha" required/><br>
                     <input type= "submit" class = "bt_enviar" value = "Entrar">
